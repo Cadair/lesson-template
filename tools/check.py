@@ -26,6 +26,14 @@ import yaml
 
 import validation_helpers as vh
 
+# Make compatible with version 0.5.x and 0.6.x of CommonMark
+try:
+    # 0.5.x
+    from CommonMark import DocParser as Parser
+except ImportError:
+    # 0.6.x
+    from CommonMark import Parser
+
 NUMBER_OF_ERRORS = 0
 
 def incr_error(func):
@@ -84,7 +92,7 @@ class MarkdownValidator(object):
         self._callout_counts = collections.Counter()
 
     def _parse_markdown(self, markdown):
-        parser = CommonMark.DocParser()
+        parser = Parser()
         ast = parser.parse(markdown)
         return ast
 
